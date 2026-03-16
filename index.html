@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davide Falcone — Fintech Engineer</title>
+    <meta name="description" content="Lead Software Engineer building regulated financial platforms. CASS reconciliation, FCA compliance, event-driven systems at scale.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #e8e4df;
+            --text-dim: #8a857e;
+            --text-faint: #5a564f;
+            --accent: #c9a96e;
+            --rule: #1e1e1e;
+            --serif: 'Source Serif 4', Georgia, serif;
+            --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+        }
+
+        html {
+            font-size: 18px;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--serif);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ——— HERO ——— */
+        .hero {
+            padding: 6rem 0 4rem;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: 2.8rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero .tagline {
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+            max-width: 520px;
+        }
+
+        .hero .current {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            font-weight: 400;
+            color: var(--text-faint);
+            margin-top: 1.4rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        /* ——— SECTIONS ——— */
+        section {
+            padding: 3rem 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        .section-label {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--text-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 1.8rem;
+        }
+
+        /* ——— ABOUT ——— */
+        .about p {
+            margin-bottom: 1.2rem;
+            color: var(--text-dim);
+            font-size: 0.88rem;
+        }
+
+        .about p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ——— NEWSLETTER ——— */
+        .newsletter-title {
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .newsletter p {
+            color: var(--text-dim);
+            font-size: 0.88rem;
+            margin-bottom: 1.6rem;
+            max-width: 560px;
+        }
+
+        .newsletter-link {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 2px;
+            transition: opacity 0.2s ease;
+        }
+
+        .newsletter-link:hover {
+            opacity: 0.7;
+        }
+
+        /* ——— EXPERIENCE ——— */
+        .exp-item {
+            margin-bottom: 1.6rem;
+        }
+
+        .exp-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .exp-role {
+            font-family: var(--serif);
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text);
+        }
+
+        .exp-company {
+            font-weight: 600;
+        }
+
+        .exp-dates {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-faint);
+            letter-spacing: 0.03em;
+        }
+
+        .exp-detail {
+            font-family: var(--mono);
+            font-size: 0.76rem;
+            color: var(--text-dim);
+            margin-top: 0.3rem;
+            line-height: 1.6;
+        }
+
+        /* ——— TECH ——— */
+        .tech-line {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            letter-spacing: 0.01em;
+        }
+
+        /* ——— PROJECTS ——— */
+        .project-item {
+            margin-bottom: 1.2rem;
+        }
+
+        .project-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-name {
+            font-family: var(--serif);
+            font-size: 0.92rem;
+            font-weight: 400;
+            color: var(--text);
+        }
+
+        .project-desc {
+            font-family: var(--mono);
+            font-size: 0.76rem;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
+
+        .project-link {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-faint);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .project-link:hover {
+            color: var(--text-dim);
+        }
+
+        /* ——— CONTACT ——— */
+        .contact p {
+            color: var(--text-dim);
+            font-size: 0.88rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .contact-links {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            line-height: 2;
+        }
+
+        .contact-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            margin-right: 1.5rem;
+            white-space: nowrap;
+        }
+
+        .contact-links a:hover {
+            color: var(--text);
+            border-color: var(--text-dim);
+        }
+
+        /* ——— FOOTER ——— */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        footer p {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--text-faint);
+            letter-spacing: 0.03em;
+        }
+
+        /* ——— RESPONSIVE ——— */
+        @media (max-width: 600px) {
+            html {
+                font-size: 16px;
+            }
+
+            .hero {
+                padding: 4rem 0 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            section {
+                padding: 2.4rem 0;
+            }
+
+            .contact-links a {
+                display: inline-block;
+                margin-right: 0;
+                margin-bottom: 0.3rem;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="hero">
+            <h1>Davide Falcone</h1>
+            <p class="tagline">Fintech Engineer. I build backend systems where bugs have legal consequences.</p>
+            <p class="current">Lead Engineer at Moneyfarm · Previously IOG/IOHK (Cardano)</p>
+        </header>
+
+        <!-- ABOUT -->
+        <section class="about">
+            <p class="section-label">About</p>
+            <p>Lead Software Engineer with 7+ years building regulated financial platforms and blockchain infrastructure. Currently at Moneyfarm, CASS reconciliation, fee billing architecture, event-driven microservices, £15B AUM under FCA regulation. Previously led a 7-engineer team at IOG building credential verification on Cardano.</p>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section class="newsletter">
+            <p class="section-label">Newsletter</p>
+            <div class="newsletter-title">Money in Production</div>
+            <p>Every two weeks I write about what it actually takes to build financial software, architecture tradeoffs in regulated environments, domain knowledge most engineers skip, and patterns that matter when handling real money.</p>
+            <a href="https://davidefalcone.substack.com" class="newsletter-link" target="_blank" rel="noopener">Read on Substack →</a>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section>
+            <p class="section-label">Experience</p>
+
+            <div class="exp-item">
+                <div class="exp-role"><span class="exp-company">Moneyfarm</span> — Lead Software Engineer</div>
+                <div class="exp-dates">2025 – Present</div>
+                <div class="exp-detail">CASS reconciliation architecture · ITA/UK repricing · FCA-regulated billing · £15B AUM</div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-role"><span class="exp-company">IOG / IOHK</span> — Lead Software Engineer</div>
+                <div class="exp-dates">2023 – 2024</div>
+                <div class="exp-detail">7-engineer team · Credential verification platform · Scala, Akka, Play</div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-role"><span class="exp-company">Moneyfarm</span> — Software Engineer</div>
+                <div class="exp-dates">2022 – 2023</div>
+                <div class="exp-detail">Kafka event-driven billing · Public API design · Cats Effect migration</div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-role"><span class="exp-company">ExtraRed</span> — Java Developer → Team Lead</div>
+                <div class="exp-dates">2020 – 2022</div>
+                <div class="exp-detail">Promoted in 9 months · 5 backend engineers · AWS migration</div>
+            </div>
+        </section>
+
+        <!-- TECH -->
+        <section>
+            <p class="section-label">Stack</p>
+            <p class="tech-line">Scala · Java · TypeScript · Rust · Python · Kafka · PostgreSQL · MongoDB · Redis · Docker · Kubernetes · AWS</p>
+        </section>
+
+        <!-- PROJECTS -->
+        <section>
+            <p class="section-label">Open Source</p>
+
+            <div class="project-item">
+                <div class="project-name">Awesome Solana Trader</div>
+                <div class="project-desc">Open source Telegram bot for Solana trading. Stop-loss, take-profit, Jupiter DEX integration.</div>
+                <a href="https://github.com/davidefalcone21/awesome-solana-trader" class="project-link" target="_blank" rel="noopener">github.com/davidefalcone21/awesome-solana-trader</a>
+            </div>
+
+            <div class="project-item">
+                <div class="project-name">Python RAG Patterns</div>
+                <div class="project-desc">RAG examples comparing local (Ollama) and cloud (AWS Bedrock) approaches.</div>
+                <a href="https://github.com/davidefalcone21/python-rag-patterns" class="project-link" target="_blank" rel="noopener">github.com/davidefalcone21/python-rag-patterns</a>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact">
+            <p class="section-label">Contact</p>
+            <p>Open to conversations about fintech engineering, regulated systems, and blockchain infrastructure.</p>
+            <div class="contact-links">
+                <a href="mailto:davide@davidefalcone.com">davide@davidefalcone.com</a>
+                <a href="https://linkedin.com/in/davide-falcone" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/davidefalcone21" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://davidefalcone.substack.com" target="_blank" rel="noopener">Substack</a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2026 Davide Falcone</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
