@@ -3,97 +3,77 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Opening Telegram…</title>
-  <!-- Telegram's official Mini App SDK. Defines window.Telegram.WebApp when present. -->
+  <title>Returning to Telegram…</title>
+  <!-- Telegram Mini App SDK. Defines window.Telegram.WebApp when present. -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root { color-scheme: light dark; }
+    html, body { margin: 0; padding: 0; height: 100%; background: Canvas; color: CanvasText; }
     body {
-      font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
-      margin: 0; padding: 24px; min-height: 100vh; box-sizing: border-box;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 16px; text-align: center;
+      display: flex; align-items: center; justify-content: center;
+      font: 15px -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
     }
-    h1 { font-size: 20px; margin: 0; }
-    p { margin: 0; opacity: 0.75; }
-    .btn {
-      display: inline-block; padding: 15px 24px; border-radius: 10px;
-      background: #2481cc; color: #fff; text-decoration: none;
-      font-weight: 600; font-size: 16px;
+    /* Hidden by default. Only shown if the auto-action didn't dismiss the
+       page within ~1.5s (i.e. neither close() nor location.replace worked). */
+    #fallback {
+      display: none; flex-direction: column; align-items: center;
+      gap: 14px; padding: 24px; text-align: center;
     }
-    /* Diagnostics: visible by default so you can debug on a phone without a cable.
-       Add ?debug=0 to the URL to hide them in production. */
-    #diag {
-      font-size: 11px; opacity: 0.55; white-space: pre-wrap; word-break: break-all;
-      max-width: 92vw; margin-top: 28px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    #fallback a {
+      display: inline-block; padding: 14px 22px; border-radius: 10px;
+      background: #2481cc; color: #fff; text-decoration: none; font-weight: 600;
+    }
+    #fallback .diag {
+      font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+      opacity: 0.55; word-break: break-all;
     }
   </style>
 </head>
 <body>
-  <h1>Opening Telegram…</h1>
-  <p>If nothing happens automatically, tap the button.</p>
-  <a id="cta" class="btn" href="#">Open Atlas on Telegram</a>
-  <pre id="diag"></pre>
-
+  <div id="fallback">
+    <a id="cta" href="https://t.me/askatlas_bot">Open Telegram</a>
+    <div class="diag" id="diag"></div>
+  </div>
   <script>
     (function () {
-      // Fallback destination if no (or an invalid) ?to= is supplied.
       var DEFAULT_DEST = "https://t.me/askatlas_bot";
 
-      // Read ?to= but ONLY accept https://t.me/ links, so this page can't be
-      // abused as an open redirector to arbitrary sites.
+      // Read ?to= but ONLY accept https://t.me/ links (no open redirector).
       var dest = DEFAULT_DEST;
-      var showDebug = true;
       try {
-        var params = new URLSearchParams(location.search);
-        var to = params.get("to");
+        var to = new URLSearchParams(location.search).get("to");
         if (to && /^https:\/\/t\.me\//i.test(to)) dest = to;
-        if (params.get("debug") === "0") showDebug = false;
       } catch (e) {}
+      document.getElementById("cta").setAttribute("href", dest);
 
-      var diag = document.getElementById("diag");
-      if (!showDebug) diag.style.display = "none";
-      function log(m) { diag.textContent += m + "\n"; }
+      var tg = window.Telegram && window.Telegram.WebApp;
+      // platform === "unknown" means the SDK loaded but we're NOT inside a
+      // Telegram WebApp session (e.g. a normal browser tab), so bridge calls
+      // would be no-ops.
+      var inside = !!(tg && tg.platform && tg.platform !== "unknown");
 
-      var tg = (window.Telegram && window.Telegram.WebApp) || null;
-      // platform === "unknown" means the SDK loaded but we're NOT inside Telegram
-      // (e.g. a normal browser), so the JS bridge calls would be no-ops.
-      var insideTelegram = !!(tg && tg.platform && tg.platform !== "unknown");
-
-      log("destination          : " + dest);
-      log("Telegram.WebApp present: " + !!tg);
-      log("inside Telegram       : " + insideTelegram);
-      log("platform              : " + (tg ? tg.platform : "n/a"));
-
-      var cta = document.getElementById("cta");
-      cta.setAttribute("href", dest); // long-press / desktop fallback
-
-      function go() {
-        if (insideTelegram && typeof tg.openTelegramLink === "function") {
-          log("→ Telegram.WebApp.openTelegramLink()");
-          try {
-            tg.openTelegramLink(dest);
-            return;
-          } catch (e) {
-            log("openTelegramLink threw: " + e + " — falling back");
-          }
-        }
-        // Not inside Telegram (system browser, desktop, or bridge failed):
-        // a plain navigation to a t.me link deep-links into the Telegram app.
-        log("→ window.location = dest");
-        window.location.href = dest;
+      // Path 1: inside the Telegram mini app webview → close it.
+      // close() dismisses the WebView and returns the user to the chat the
+      // mini app was opened from (the bot chat). One action, no leftover
+      // mini app behind, no second "go back" tap.
+      if (inside) {
+        try { if (typeof tg.ready === "function") tg.ready(); } catch (e) {}
+        try { tg.close(); return; } catch (e) {}
       }
 
-      cta.addEventListener("click", function (e) {
-        e.preventDefault();
-        go();
-      });
+      // Path 2: not in a mini app session (system browser, etc.) → OS deep-link
+      // to the bot via t.me. The OS hands the link off to the Telegram app.
+      location.replace(dest);
 
-      if (tg && typeof tg.ready === "function") tg.ready();
-
-      // Auto-attempt once, after giving the bridge a moment to initialise.
-      setTimeout(go, 400);
+      // Safety net: if neither path actually dismissed the page within 1.5s,
+      // reveal a manual fallback (and a tiny diagnostic line so we can see why).
+      setTimeout(function () {
+        document.getElementById("diag").textContent =
+          "inside=" + inside +
+          "  platform=" + (tg ? tg.platform : "n/a") +
+          "  v=" + (tg ? tg.version : "n/a");
+        document.getElementById("fallback").style.display = "flex";
+      }, 1500);
     })();
   </script>
 </body>
